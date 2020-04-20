@@ -26,16 +26,22 @@ def Q(tiler, observation, w): #returns list of all q-values for the state
 		Q[i] = dot_product(tiler.tilecode(observation, i), w)
 	return i
 
-alpha = (.1/ tile.numTilings)*3.2 #stepsize
-
+alpha = .5/8 #stepsize
+epsilon = .2
 
 for episode in range(num_episodes):
 	G = 0
 	observation = env.reset()
+	action = 0
 	while True:
 		print("observation = ", observation)
-		q_list = Q(tiler, observation, w)
-		action = np.argmax(q_list)
+		if random.random() < epsilon:
+			q_list = Q(tiler, observation, w)
+			action = np.argmax(q_list)
+		else:
+			action = random.choice([0, 1, 2])
 		state2, reward, done, info = env.step(action)
 		observation = state2
+		# if (done):
+			# w += alpha(G - Q(tiler, )
 
