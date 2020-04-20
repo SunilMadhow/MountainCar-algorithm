@@ -1,6 +1,7 @@
 #implementing example 1 from Sutton 2nd Edition, Chapter 12
 import random
 import gym
+import numpy as np
 from tilecoder import Tilecoder	
 
 env = gym.make('MountainCar-v0')
@@ -8,4 +9,33 @@ print(env.observation_space.high)
 print(env.observation_space.low)	
 
 tiler = Tilecoder(env, 4, 4)
-tiler.print_vector(.4, -.035, 2)
+# tiler.print_vector(-.569, 0, 2)
+
+num_episodes = 500
+w = [0] * tiler.vector_length #weight vector
+
+def dot_product(w, x): 
+	inner_product = 0
+	for i in range(len(w)):
+		inner_product += w[i]*x[i]
+	return inner_product
+
+def Q(tiler, observation, w): #returns list of all q-values for the state
+	Q = np.zeros(tiler.num_actions)
+	for i in range(tiler.num_actions):
+		Q[i] = dot_product(tiler.tilecode(observation, i), w)
+	return i
+
+alpha = (.1/ tile.numTilings)*3.2 #stepsize
+
+
+for episode in range(num_episodes):
+	G = 0
+	observation = env.reset()
+	while True:
+		print("observation = ", observation)
+		q_list = Q(tiler, observation, w)
+		action = np.argmax(q_list)
+		state2, reward, done, info = env.step(action)
+		observation = state2
+

@@ -15,15 +15,20 @@ class Tilecoder:
 		self.actions = env.action_space
 		self.num_actions = 3#FIND GENERALIZED WAY OF DETERMINING
 
+		self.vector_length = self.num_tiles* self.num_tiles * self.num_tilings * self.num_actions
+
 	def normalize(self, features): #normalize to range [0, 1] to make tilecoding easier (super lazy and probably bad)
+		normalized = [0]*len(features)
 		for i in range(0, len(features)):
-			features[i] = (features[i] - self.min_values[i])/(self.max_values[i] - self.min_values[i])
+			normalized[i] = (features[i] - self.min_values[i])/(self.max_values[i] - self.min_values[i])
+		return normalized
 
 
-	def tilecode(self, features, action):
+	def tilecode(self, raw_features, action):
+		print("CALL TO TILECODE")
 		one_hot = [0] *self.num_tiles* self.num_tiles * self.num_tilings * self.num_actions
-		print(len(one_hot))
-		self.normalize(features)
+		print("featuers from inside fcall = ", raw_features)
+		features = self.normalize(raw_features)
 		for i in range(1, self.num_tilings+1):
 			print("-----Tiling", i)
 			index = -1
@@ -32,7 +37,6 @@ class Tilecoder:
 			print("tile_span = ", tile_span)
 			offset_x = i * tile_span / self.num_tilings
 			offset_y = 1.5 * offset_x
-			print(offset_x)
 			
 			x = features[0] + offset_x
 			y = features[1] + offset_y 
@@ -53,6 +57,7 @@ class Tilecoder:
 			one_hot[index] = 1
 
 		return one_hot
+
 
 	def print_vector(self, x, y, a):
 		vector = self.tilecode([x,y], a)
