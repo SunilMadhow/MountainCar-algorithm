@@ -13,17 +13,16 @@ class Tilecoder:
 
 		self.dim = len(self.max_values) #WLOG mountaincar statespace has a dimensionality of 2 (position and velocity)
 		self.actions = env.action_space
+		self.num_actions = 3#FIND GENERALIZED WAY OF DETERMINING
 
 	def normalize(self, features): #normalize to range [0, 1] to make tilecoding easier (super lazy and probably bad)
 		for i in range(0, len(features)):
 			features[i] = (features[i] - self.min_values[i])/(self.max_values[i] - self.min_values[i])
 
 
-	def features_to_tiles(self, features):
-		one_hot = [0] *self.num_tiles* self.num_tiles * self.num_tilings
+	def tilecode(self, features, action):
+		one_hot = [0] *self.num_tiles* self.num_tiles * self.num_tilings * self.num_actions
 		print(len(one_hot))
-		#a one_hot vector with precisely as many ones as there are tilings, with a one corrosponding to the data
-		#being present in that tile
 		self.normalize(features)
 		for i in range(1, self.num_tilings+1):
 			print("-----Tiling", i)
@@ -49,13 +48,13 @@ class Tilecoder:
 			print("j = ", floor(j))
 			print("plosition = ", floor(position))
 			
-			index = (int)(self.num_tiles*self.num_tiles*(i-1) + floor(position))
+			index = (int)(self.num_tiles*self.num_tiles*(i-1)*self.num_actions + floor(position) + action)
 			print(index)
 			one_hot[index] = 1
 
 		return one_hot
 
-	def print_vector(self, x, y):
-		vector = self.features_to_tiles([x,y])
+	def print_vector(self, x, y, a):
+		vector = self.tilecode([x,y], a)
 		print(vector)
 
