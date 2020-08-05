@@ -1,0 +1,15 @@
+No dicount, step_size = .32/num_tilings, 7 tilings of 4 tiles
+(stole these hyperparameters from https://github.com/wagonhelm/Tilecoder)
+Output will be vector of length 4116
+Average reward over 100 episodes = -201.36
+Average reward over 100 episodes = -188.5
+Average reward over 100 episodes = -167.67
+Average reward over 100 episodes = -142.62
+Average reward over 100 episodes = -136.23
+Average reward over 100 episodes = -130.92
+Average reward over 100 episodes = -143.4
+Average reward over 100 episodes = -140.93
+Average reward over 100 episodes = -117.88
+Average reward over 100 episodes = -117.92
+Average reward over 100 episodes = -110.17
+Solved in 1101 episodes!
