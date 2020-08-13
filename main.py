@@ -50,6 +50,9 @@ for episode in range(num_episodes):
 			w  = w + alpha*(reward - prediction)*x_s
 			observation = env.reset()
 			records.append(G)
+			if sum(records[episode - 100:episode])/100 >= -110:
+				print("Solved in {d} episodes!".format(d = episode + 1))
+				break
 			break
 
 		action = 0
@@ -69,8 +72,6 @@ for episode in range(num_episodes):
 	hundred_sum = hundred_sum + G
 
 	if episode % 100 == 0 and episode >= 100:
+		# epsilon /= 2
 		print("Average reward over 100 episodes = {k}".format(k = hundred_sum/100))
-		if sum(records[episode - 100:episode])/100 >= -110:
-				print("Solved in {d} episodes!".format(d = episode + 1))
-				break
 		hundred_sum = 0
